@@ -18,14 +18,14 @@ export default function WaitlistForm() {
   };
 
   return (
-    <div className="bg-indigo-50 py-24 sm:py-32" id="waitlist">
-      <div className="mx-auto max-w-7xl px-6 lg:px-8">
-        <div className="mx-auto max-w-2xl text-center">
-          <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
-            Join the Waitlist
+    <div className="bg-white dark:bg-gray-900 py-16 sm:py-24">
+      <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+        <div className="mx-auto max-w-xl lg:text-center">
+          <h2 className="text-sm font-semibold leading-6 text-indigo-600 dark:text-indigo-400">
+            Join Waitlist
           </h2>
-          <p className="mt-2 text-lg leading-8 text-gray-600">
-            Be the first to experience AstroGuide when we launch.
+          <p className="mt-2 text-2xl sm:text-3xl font-bold tracking-tight text-gray-900 dark:text-white">
+            Be the first to know when we launch
           </p>
         </div>
         <div className="mx-auto mt-16 max-w-xl sm:mt-20">
@@ -38,17 +38,17 @@ export default function WaitlistForm() {
           ) : (
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
               <div>
-                <label htmlFor="name" className="block text-sm font-medium leading-6 text-gray-900">
+                <label htmlFor="name" className="block text-sm font-medium leading-6 text-gray-900 dark:text-gray-100">
                   Name
                 </label>
                 <input
                   {...register("name", { required: "Name is required" })}
-                  className="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                  className="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 dark:text-gray-100 dark:bg-gray-800 shadow-sm ring-1 ring-inset ring-gray-300 dark:ring-gray-700 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                 />
                 {errors.name && <p className="mt-2 text-sm text-red-600">{errors.name.message}</p>}
               </div>
               <div>
-                <label htmlFor="email" className="block text-sm font-medium leading-6 text-gray-900">
+                <label htmlFor="email" className="block text-sm font-medium leading-6 text-gray-900 dark:text-gray-100">
                   Email
                 </label>
                 <input
@@ -60,7 +60,7 @@ export default function WaitlistForm() {
                     }
                   })}
                   type="email"
-                  className="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                  className="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 dark:text-gray-100 dark:bg-gray-800 shadow-sm ring-1 ring-inset ring-gray-300 dark:ring-gray-700 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                 />
                 {errors.email && <p className="mt-2 text-sm text-red-600">{errors.email.message}</p>}
               </div>
