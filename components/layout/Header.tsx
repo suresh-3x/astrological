@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { HiStar, HiSparkles, HiUsers, HiNewspaper } from 'react-icons/hi';
-import ThemeSwitcher from '../../components/ThemeSwitcher';
+import ThemeSwitcher from '../ThemeSwitcher';
 
 const navigation = [
   { name: 'Horoscope', href: '/horoscope', icon: HiStar },
@@ -30,14 +30,14 @@ export default function Header() {
 
   return (
     <header className="fixed w-full z-50 top-4 left-0 px-4">
-      <div className="bg-white/60 dark:bg-gray-900/60 backdrop-blur-lg rounded-2xl max-w-5xl mx-auto shadow-lg relative z-50">
+      <div className="backdrop-blur-lg bg-slate-100/50 dark:bg-slate-900/50 rounded-2xl max-w-5xl mx-auto shadow-lg relative z-50">
         <div className="px-4 sm:px-6 py-4">
           <div className="flex items-center justify-between">
             <Link 
               href="/" 
               className="text-2xl font-bold bg-gradient-to-r from-violet-600 to-indigo-600 bg-clip-text text-transparent"
             >
-              AstroGuide
+              Astrological
             </Link>
 
             <nav className="flex items-center gap-4 max-md:hidden">
@@ -82,11 +82,11 @@ export default function Header() {
       </div>
 
       <div
-        className={`lg:hidden fixed inset-0 top-20 bg-white/60 dark:bg-gray-900/60 backdrop-blur-lg shadow-lg transform transition-all duration-300 ${
+        className={`lg:hidden fixed inset-0 top-20 backdrop-blur-lg bg-slate-100/30 dark:bg-slate-900/30 transform transition-all duration-300 ${
           isMobileMenuOpen ? 'translate-x-0' : 'translate-x-full'
         }`}
       >
-        <div className="flex flex-col justify-between p-4 h-[calc(100vh-5rem)] max-w-5xl mx-auto">
+        <div className="flex flex-col justify-between p-4 h-[calc(100vh-5rem)] max-w-5xl mx-auto bg-slate-100/50 dark:bg-slate-900/50 backdrop-blur-md rounded-2xl shadow-lg">
           <div className="flex flex-col space-y-2">
             {navigation.map((item) => (
               <Link

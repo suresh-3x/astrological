@@ -16,3 +16,13 @@ body {
   color: var(--foreground);
   background: var(--background);
 }
+
+/* Add this to your global CSS file */
+.PhoneInputInput {
+  background: transparent !important;
+  color: inherit !important;
+}
+
+.dark .PhoneInputInput {
+  color: #f3f4f6 !important; /* gray-100 */
+}

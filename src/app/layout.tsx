@@ -6,7 +6,7 @@ import "./globals.css";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "AstroGuide - Your Personal Astrology Guide",
+  title: "Astrological - Your Personal Astrology Guide",
   description: "Discover your cosmic path with personalized astrological insights",
 };
 
