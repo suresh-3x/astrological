@@ -87,10 +87,11 @@ export default function Hero() {
 
     // Improved animation with better visibility
     const animate = () => {
-      // Use solid background colors matching the theme
+      // Set background color based on theme
       ctx.fillStyle = theme === 'dark' 
-        ? 'rgb(15, 23, 42)' // Solid slate-900 for dark mode
-        : 'rgb(239, 237, 216)'; // Solid slate-50 for light mode
+        ? 'rgb(15, 23, 42)'  // slate-900 to match dark mode background
+        : 'rgb(248, 250, 252)';  // slate-50 to match light mode background
+      
       ctx.fillRect(0, 0, canvas.width, canvas.height);
 
       stars.forEach((star) => {
