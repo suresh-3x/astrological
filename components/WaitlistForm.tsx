@@ -31,9 +31,17 @@ export default function WaitlistForm() {
   const {
     register,
     handleSubmit,
+    setValue,
+    watch,
     reset,
     formState: { errors },
-  } = useForm<WaitlistFormData>();
+  } = useForm<WaitlistFormData>({
+    defaultValues: {
+      interestedFeatures: [],
+    },
+  });
+
+  const interestedFeatures = watch('interestedFeatures');
 
   const onSubmit = async (data: WaitlistFormData) => {
     setIsSubmitting(true);
@@ -83,7 +91,7 @@ export default function WaitlistForm() {
   };
 
   return (
-    <div className="py-16 sm:py-24 bg-slate-50 dark:bg-slate-900/50">
+    <div className="py-16 sm:py-24  dark:bg-slate-900/50">
       <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
         {submitStatus === 'success' ? (
           <div className="mx-auto max-w-xl text-center">
@@ -115,7 +123,7 @@ export default function WaitlistForm() {
                   <input
                     type="text"
                     {...register('name', { required: 'Name is required' })}
-                    className="mt-1 block w-full rounded-md border border-slate-300 dark:border-slate-600 px-3 py-2 text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500 dark:bg-slate-800"
+                    className="mt-1 block w-full rounded-md border border-slate-300 dark:border-slate-600 px-3 py-2 text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500 bg-slate-200 dark:bg-slate-800"
                   />
                   {errors.name && (
                     <p className="mt-1 text-sm text-red-600 dark:text-red-400">{errors.name.message}</p>
@@ -136,7 +144,7 @@ export default function WaitlistForm() {
                         message: 'Invalid email address',
                       },
                     })}
-                    className="mt-1 block w-full rounded-md border border-slate-300 dark:border-slate-600 px-3 py-2 text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500 dark:bg-slate-800"
+                    className="mt-1 block w-full rounded-md border border-slate-300 dark:border-slate-600 px-3 py-2 text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500 bg-slate-200 dark:bg-slate-800"
                   />
                   {errors.email && (
                     <p className="mt-1 text-sm text-red-600 dark:text-red-400">{errors.email.message}</p>
@@ -151,25 +159,46 @@ export default function WaitlistForm() {
                   <input
                     type="tel"
                     {...register('phone')}
-                    className="mt-1 block w-full rounded-md border border-slate-300 dark:border-slate-600 px-3 py-2 text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500 dark:bg-slate-800"
+                    className="mt-1 block w-full rounded-md border border-slate-300 dark:border-slate-600 px-3 py-2 text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500 bg-slate-200 dark:bg-slate-800"
                   />
                 </div>
 
-                {/* Interested Features */}
+                {/* Interested Features - Toggle Switch Version */}
                 <div className="sm:col-span-2">
                   <label className="block text-sm font-medium text-slate-700 dark:text-slate-300">
                     Interested Features
                   </label>
-                  <div className="mt-2 space-y-2">
+                  <div className="mt-2 space-y-3">
                     {featureOptions.map((feature) => (
-                      <div key={feature} className="flex items-center">
-                        <input
-                          type="checkbox"
-                          {...register('interestedFeatures')}
-                          value={feature}
-                          className="h-4 w-4 text-indigo-600 dark:text-indigo-400 border-slate-300 dark:border-slate-600"
-                        />
-                        <label className="ml-2 text-sm text-slate-600 dark:text-slate-400">{feature}</label>
+                      <div key={feature} className="relative flex items-center justify-between">
+                        <label htmlFor={feature} className="text-sm text-slate-600 dark:text-slate-400 select-none cursor-pointer">
+                          {feature}
+                        </label>
+                        <button
+                          type="button"
+                          id={feature}
+                          onClick={() => {
+                            const isSelected = interestedFeatures?.includes(feature);
+                            const newFeatures = isSelected
+                              ? interestedFeatures.filter((f) => f !== feature)
+                              : [...(interestedFeatures || []), feature];
+                            setValue('interestedFeatures', newFeatures);
+                          }}
+                          className={`relative inline-flex h-6 w-11 items-center rounded-full
+                            transition-colors duration-200 ease-in-out
+                            focus:outline-none focus:ring-2 focus:ring-indigo-600 focus:ring-offset-2
+                            ${interestedFeatures?.includes(feature) 
+                              ? 'bg-indigo-600' 
+                              : 'bg-slate-200 dark:bg-slate-700'}`}
+                        >
+                          <span className="sr-only">Enable {feature}</span>
+                          <span
+                            aria-hidden="true"
+                            className={`pointer-events-none inline-block h-5 w-5 transform rounded-full
+                              bg-white shadow ring-0 transition duration-200 ease-in-out
+                              ${interestedFeatures?.includes(feature) ? 'translate-x-5' : 'translate-x-0'}`}
+                          />
+                        </button>
                       </div>
                     ))}
                   </div>
@@ -187,29 +216,45 @@ export default function WaitlistForm() {
                       type="text"
                       value={newFeature}
                       onChange={(e) => setNewFeature(e.target.value)}
-                      className="block flex-1 rounded-md border border-slate-300 dark:border-slate-600 px-3 py-2 text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500 dark:bg-slate-800"
+                      className="block flex-1 rounded-md border border-slate-300 dark:border-slate-600 px-3 py-2 
+                        text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500 
+                        bg-slate-200 dark:bg-slate-800"
                       placeholder="Suggest a feature"
                     />
                     <button
                       onClick={handleAddCustomFeature}
                       type="button"
-                      className="px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-500"
+                      className="px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-500 
+                        transition-colors duration-200 flex items-center gap-2"
                     >
+                      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+                      </svg>
                       Add
                     </button>
                   </div>
 
                   {/* Custom features list */}
-                  <div className="mt-2 space-y-2">
+                  <div className="mt-4 space-y-3">
                     {customFeatures.map((feature) => (
-                      <div key={feature} className="flex items-center justify-between p-2 rounded-md bg-slate-50 dark:bg-slate-800/50">
-                        <span className="text-sm text-slate-600 dark:text-slate-400">{feature}</span>
+                      <div 
+                        key={feature} 
+                        className="group relative overflow-hidden rounded-lg border border-slate-100 dark:border-slate-700 bg-slate-200 dark:bg-slate-800 shadow-sm hover:shadow-md transition-all duration-200
+                          p-4 flex items-center justify-between"
+                      >
+                        <div className="flex items-center space-x-3">
+                          <span className="text-sm font-medium text-slate-700 dark:text-slate-300">{feature}</span>
+                        </div>
                         <button
                           type="button"
                           onClick={() => handleRemoveCustomFeature(feature)}
-                          className="text-red-600 hover:text-red-700 text-sm"
+                          className="text-slate-400 hover:text-red-600 dark:hover:text-red-400 
+                            transition-colors duration-200"
                         >
-                          Remove
+                          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} 
+                              d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                          </svg>
                         </button>
                       </div>
                     ))}
@@ -224,7 +269,7 @@ export default function WaitlistForm() {
                   <textarea
                     {...register('message')}
                     rows={4}
-                    className="mt-1 block w-full rounded-md border border-slate-300 dark:border-slate-600 px-3 py-2 text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500 dark:bg-slate-800"
+                    className="mt-1 block w-full rounded-md border border-slate-300 dark:border-slate-600 px-3 py-2 text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500 bg-slate-200 dark:bg-slate-800"
                   />
                 </div>
               </div>
