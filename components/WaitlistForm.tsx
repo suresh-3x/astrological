@@ -116,7 +116,7 @@ export default function WaitlistForm() {
                 <InputField label="Name" error={errors.name?.message}>
                   <input
                     {...register('name', { required: 'Name is required' })}
-                    className="block w-full rounded-lg border-0 px-4 py-3 text-gray-900 dark:text-gray-100 shadow-sm ring-1 ring-gray-300 dark:ring-gray-600 placeholder:text-gray-400 focus:ring-2 focus:ring-indigo-600 dark:focus:ring-indigo-500 sm:text-sm"
+                    className="block w-full rounded-lg border-0 px-4 py-3 bg-transparent text-gray-900 dark:text-gray-100 shadow-sm ring-1 ring-gray-300 dark:ring-gray-600 placeholder:text-gray-400 focus:ring-2 focus:ring-indigo-600 dark:focus:ring-indigo-500 sm:text-sm"
                   />
                 </InputField>
 
@@ -126,7 +126,7 @@ export default function WaitlistForm() {
                     defaultCountry="IN"
                     value={getValues('phone')}
                     onChange={(value) => setValue('phone', value || '')}
-                    className="block w-full rounded-lg border-0 px-4 py-3 text-gray-900 dark:text-gray-100 shadow-sm ring-1 ring-gray-300 dark:ring-gray-600 placeholder:text-gray-400 focus:ring-2 focus:ring-indigo-600 dark:focus:ring-indigo-500"
+                    className="[&_.PhoneInputInput]:bg-transparent [&_.PhoneInputInput]:w-full [&_.PhoneInputInput]:rounded-lg [&_.PhoneInputInput]:border-0 [&_.PhoneInputInput]:px-4 [&_.PhoneInputInput]:py-3 [&_.PhoneInputInput]:text-gray-900 dark:[&_.PhoneInputInput]:text-gray-100 [&_.PhoneInputInput]:shadow-sm [&_.PhoneInputInput]:ring-1 [&_.PhoneInputInput]:ring-gray-300 dark:[&_.PhoneInputInput]:ring-gray-600 [&_.PhoneInputInput]:focus:ring-2 [&_.PhoneInputInput]:focus:ring-indigo-600 dark:[&_.PhoneInputInput]:focus:ring-indigo-500"
                   />
                 </InputField>
 
@@ -178,7 +178,7 @@ export default function WaitlistForm() {
                     <input
                       value={customFeature}
                       onChange={(e) => setCustomFeature(e.target.value)}
-                      className="block w-full rounded-lg border-0 px-4 py-3 text-gray-900 dark:text-gray-100 shadow-sm ring-1 ring-gray-300 dark:ring-gray-600 placeholder:text-gray-400 focus:ring-2 focus:ring-indigo-600 dark:focus:ring-indigo-500"
+                      className="block w-full rounded-lg border-0 px-4 py-3 bg-transparent text-gray-900 dark:text-gray-100 shadow-sm ring-1 ring-gray-300 dark:ring-gray-600 placeholder:text-gray-400 focus:ring-2 focus:ring-indigo-600 dark:focus:ring-indigo-500"
                     />
                     <button
                       type="button"
@@ -194,7 +194,7 @@ export default function WaitlistForm() {
                   <textarea
                     {...register('message')}
                     rows={4}
-                    className="block w-full rounded-lg border-0 px-4 py-3 text-gray-900 dark:text-gray-100 shadow-sm ring-1 ring-gray-300 dark:ring-gray-600 placeholder:text-gray-400 focus:ring-2 focus:ring-indigo-600 dark:focus:ring-indigo-500"
+                    className="block w-full rounded-lg border-0 px-4 py-3 bg-transparent text-gray-900 dark:text-gray-100 shadow-sm ring-1 ring-gray-300 dark:ring-gray-600 placeholder:text-gray-400 focus:ring-2 focus:ring-indigo-600 dark:focus:ring-indigo-500"
                   />
                 </InputField>
               </div>

@@ -1,6 +1,6 @@
 import Hero from '../../components/Hero';
 import Features from '../../components/Features';
-// import WaitlistForm from '../../components/WaitlistForm';
+import WaitlistForm from '../../components/WaitlistForm';
 import FAQ from '../../components/FAQ';
 
 export default function Home() {
@@ -9,7 +9,7 @@ export default function Home() {
       <Hero />
       <Features />
       <FAQ />
-      {/* <WaitlistForm /> */}
+      <WaitlistForm />
     </main>
   );
 } 
