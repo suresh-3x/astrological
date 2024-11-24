@@ -7,10 +7,10 @@ import { HiStar, HiSparkles, HiUsers, HiNewspaper } from 'react-icons/hi';
 import ThemeSwitcher from '../ThemeSwitcher';
 
 const navigation = [
-  { name: 'Horoscope', href: '/horoscope', icon: HiStar },
-  { name: 'Services', href: '/services', icon: HiSparkles },
-  { name: 'Astrologers', href: '/astrologers', icon: HiUsers },
-  { name: 'Blog', href: '/blog', icon: HiNewspaper },
+  { name: 'Horoscope', href: '/coming-soon', icon: HiStar },
+  { name: 'Services', href: '/coming-soon', icon: HiSparkles },
+  { name: 'Astrologers', href: '/coming-soon', icon: HiUsers },
+  { name: 'Blog', href: '/coming-soon', icon: HiNewspaper },
 ];
 
 export default function Header() {
@@ -30,7 +30,7 @@ export default function Header() {
 
   return (
     <header className="fixed w-full z-50 top-4 left-0 px-4">
-      <div className="backdrop-blur-lg bg-slate-100/50 dark:bg-slate-900/50 rounded-2xl max-w-5xl mx-auto shadow-lg relative z-50">
+      <div className="backdrop-blur-lg dark:bg-slate-900/50 rounded-2xl max-w-5xl mx-auto shadow-lg relative z-50">
         <div className="px-4 sm:px-6 py-4">
           <div className="flex items-center justify-between">
             <Link 
@@ -48,10 +48,10 @@ export default function Header() {
                   className={`px-4 py-2.5 rounded-xl text-sm font-medium transition-all duration-200 flex items-center gap-2 hover:scale-105 ${
                     pathname === item.href
                       ? 'text-indigo-600 dark:text-indigo-400 bg-indigo-50 dark:bg-indigo-900/20'
-                      : 'text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800/50'
+                      : 'text-gray-600 dark:text-gray-300 hover:bg-[#bbbaab] dark:hover:bg-gray-800/50'
                   }`}
                 >
-                  <item.icon className="h-4 w-4" />
+                  <item.icon className="h-4 w-4" /> 
                   {item.name}
                 </Link>
               ))}
@@ -96,7 +96,7 @@ export default function Header() {
                 className={`px-4 py-2.5 rounded-xl text-sm font-medium transition-all duration-200 flex items-center gap-2 ${
                   pathname === item.href
                     ? 'text-indigo-600 dark:text-indigo-400 bg-indigo-50 dark:bg-indigo-900/20'
-                    : 'text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800/50'
+                    : 'text-gray-600 dark:text-gray-300 hover:bg-indigo-50/50 dark:hover:bg-gray-800/50'
                 }`}
               >
                 <item.icon className="h-4 w-4" />

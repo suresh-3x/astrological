@@ -9,7 +9,7 @@ export default function Home() {
       <Hero />
       <Features />
       <FAQ />
-      <WaitlistForm />
+      {/* <WaitlistForm /> */}
     </main>
   );
 } 

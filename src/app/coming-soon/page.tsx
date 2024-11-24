@@ -86,19 +86,19 @@ const ComingSoon = () => {
   }, []);
 
   return (
-    <div className="relative min-h-screen overflow-hidden">
+    <div className="relative overflow-hidden">
       <canvas
         ref={canvasRef}
-        className="absolute inset-0 -z-10"
+        className="absolute inset-0 -z-10 pointer-events-none"
       />
-      <div className="relative z-10 flex min-h-screen flex-col items-center justify-center px-4 text-center">
-        <h1 className="text-4xl sm:text-6xl font-bold tracking-tight text-white mb-6">
+      <div className="relative z-10 flex min-h-[calc(100vh-4rem)] flex-col items-center justify-center px-4 text-center">
+        <h1 className="mb-6 text-4xl font-bold tracking-tight text-slate-900 dark:text-white sm:text-6xl">
           Coming
           <span className="bg-gradient-to-r from-violet-600 to-indigo-600 bg-clip-text text-transparent">
             {' '}Soon
           </span>
         </h1>
-        <p className="max-w-md text-lg text-gray-300 mb-8">
+        <p className="mb-8 max-w-md text-lg text-slate-600 dark:text-gray-300">
           We&apos;re working on something magical. Stay tuned for an extraordinary journey through the cosmos.
         </p>
         <Link

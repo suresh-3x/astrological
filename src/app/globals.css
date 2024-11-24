@@ -2,27 +2,23 @@
 @tailwind components;
 @tailwind utilities;
 
-::root {
-  --background: #ffffff;
-  --foreground: #171717;
+:root {
+  --background: #efedd8;  /* slate-50 */
+  --foreground: #1e293b;  /* slate-800 */
+  --background-secondary: #f1f5f9;  /* slate-100 */
+  --card-background: #ffffff;
+  --card-border: #e2e8f0;  /* slate-200 */
 }
 
 :root[class~="dark"] {
-  --background: #0a0a0a;
-  --foreground: #ededed;
+  --background: #0f172a;  /* slate-900 */
+  --foreground: #e2e8f0;  /* slate-200 */
+  --background-secondary: #1e293b;  /* slate-800 */
+  --card-background: #1e293b;  /* slate-800 */
+  --card-border: #334155;  /* slate-700 */
 }
 
 body {
   color: var(--foreground);
   background: var(--background);
-}
-
-/* Add this to your global CSS file */
-.PhoneInputInput {
-  background: transparent !important;
-  color: inherit !important;
-}
-
-.dark .PhoneInputInput {
-  color: #f3f4f6 !important; /* gray-100 */
 }

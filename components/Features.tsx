@@ -58,7 +58,7 @@ export default function Features() {
           <h2 className="text-sm font-semibold leading-6 text-indigo-600 dark:text-indigo-400">
             Features
           </h2>
-          <p className="mt-2 text-2xl sm:text-3xl font-bold tracking-tight text-gray-900 dark:text-white">
+          <p className="mt-2 text-2xl sm:text-3xl font-bold tracking-tight text-slate-800 dark:text-slate-200">
             Everything you need in your cosmic journey
           </p>
         </div>
@@ -66,11 +66,11 @@ export default function Features() {
           <dl className="grid max-w-xl grid-cols-1 gap-x-8 gap-y-10 lg:max-w-none lg:grid-cols-3">
             {features.map((feature) => (
               <div key={feature.name} className="flex flex-col">
-                <dt className="flex items-center gap-x-3 text-sm font-semibold leading-7 text-gray-900 dark:text-white">
+                <dt className="flex items-center gap-x-3 text-sm font-semibold leading-7 text-slate-800 dark:text-slate-200">
                   <feature.icon className="h-5 w-5 flex-none text-indigo-600 dark:text-indigo-400" />
                   {feature.name}
                 </dt>
-                <dd className="mt-2 text-sm leading-7 text-gray-600 dark:text-gray-300">
+                <dd className="mt-2 text-sm leading-7 text-slate-600 dark:text-slate-400">
                   <p>{feature.description}</p>
                 </dd>
               </div>

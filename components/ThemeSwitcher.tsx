@@ -27,7 +27,7 @@ export default function ThemeSwitcher() {
   return (
     <button
       onClick={toggleTheme}
-      className="rounded-xl p-2 text-gray-700 hover:bg-gray-50 dark:text-gray-300 dark:hover:bg-gray-800"
+      className="rounded-xl p-2 text-gray-700 dark:text-gray-300 hover:bg-[#bbbaab] dark:hover:bg-gray-800/50"
       aria-label="Toggle theme"
     >
       {theme === 'light' ? (
