@@ -7,10 +7,10 @@ import { HiStar, HiSparkles, HiUsers, HiNewspaper } from 'react-icons/hi';
 import ThemeSwitcher from '../ThemeSwitcher';
 
 const navigation = [
-  { name: 'Horoscope', href: '/coming-soon', icon: HiStar },
-  { name: 'Services', href: '/coming-soon', icon: HiSparkles },
-  { name: 'Astrologers', href: '/coming-soon', icon: HiUsers },
-  { name: 'Blog', href: '/coming-soon', icon: HiNewspaper },
+  { name: 'Horoscope', href: '/horoscope', icon: HiStar },
+  { name: 'Services', href: '/services', icon: HiSparkles },
+  { name: 'Astrologers', href: '/astrologers', icon: HiUsers },
+  { name: 'Blog', href: '/blog', icon: HiNewspaper },
 ];
 
 export default function Header() {
