@@ -8,7 +8,7 @@ const config: Config = {
     "./components/**/*.{js,ts,jsx,tsx,mdx}",
   ],
   darkMode: 'class',
-theme: {
+  theme: {
     extend: {
       animation: {
         'float': 'float 6s ease-in-out infinite',

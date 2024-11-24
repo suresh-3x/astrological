@@ -22,17 +22,32 @@ export default function RootLayout({
         <script
           dangerouslySetInnerHTML={{
             __html: `
-              try {
-                const theme = localStorage.getItem('theme') || 'light';
-                document.documentElement.classList.toggle('dark', theme === 'dark');
-              } catch (e) {}
+              (function() {
+                try {
+                  const theme = localStorage.getItem('theme');
+                  if (theme === 'dark') {
+                    document.documentElement.classList.add('dark');
+                  } else if (theme === 'light') {
+                    document.documentElement.classList.remove('dark');
+                  } else {
+                    // Check system preference
+                    if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+                      document.documentElement.classList.add('dark');
+                      localStorage.setItem('theme', 'dark');
+                    } else {
+                      document.documentElement.classList.remove('dark');
+                      localStorage.setItem('theme', 'light');
+                    }
+                  }
+                } catch (e) {}
+              })();
             `,
           }}
         />
-      <Analytics/>
+        <Analytics/>
       </head>
       <body suppressHydrationWarning className={`h-full ${inter.className}`}>
-      	<MainLayout>{children}</MainLayout>
+        <MainLayout>{children}</MainLayout>
       </body>
     </html>
   );

@@ -1,224 +1,254 @@
 'use client';
-import React, { useState } from 'react';
-import { useForm } from 'react-hook-form';
-import PhoneInput from 'react-phone-number-input';
-import 'react-phone-number-input/style.css';
 
-type FormData = {
+import { useState } from 'react';
+import { useForm } from 'react-hook-form';
+
+interface WaitlistFormData {
   email: string;
   name: string;
   phone: string;
-  message: string;
+  message?: string;
   interestedFeatures: string[];
-  customFeature: string;
-};
+  customFeatures?: string[];
+}
 
-const FEATURE_OPTIONS = [
-  "Horoscope Reading",
-  "Compatibility Analysis",
-  "Birth Chart",
-  "Daily Predictions",
-  "Personalized Reports",
+const featureOptions = [
+  'Daily Horoscopes',
+  'Birth Chart Analysis',
+  'Compatibility Reports',
+  'Transit Forecasts',
+  'AI Predictions',
+  'Mobile App',
 ];
 
-const InputField = ({
-  label,
-  error,
-  children,
-}: {
-  label: string;
-  error?: string;
-  children: React.ReactNode;
-}) => (
-  <div>
-    <label className="block text-sm font-medium leading-6 text-gray-900 dark:text-gray-100">
-      {label}
-    </label>
-    {children}
-    {error && <p className="mt-1 text-sm text-red-600">{error}</p>}
-  </div>
-);
-
 export default function WaitlistForm() {
-  const [isSubmitted, setIsSubmitted] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle');
+  const [errorMessage, setErrorMessage] = useState('');
   const [customFeatures, setCustomFeatures] = useState<string[]>([]);
-  const [customFeature, setCustomFeature] = useState('');
-  const [selectedFeatures, setSelectedFeatures] = useState<Set<string>>(new Set());
-  const { register, handleSubmit, formState: { errors }, setValue, getValues } = useForm<FormData>();
+  const [newFeature, setNewFeature] = useState('');
 
-  const onSubmit = async (data: FormData) => {
-    setIsLoading(true);
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm<WaitlistFormData>();
+
+  const onSubmit = async (data: WaitlistFormData) => {
+    setIsSubmitting(true);
+    setSubmitStatus('idle');
+    setErrorMessage('');
+
+    const submissionData = {
+      ...data,
+      customFeatures: customFeatures
+    };
+
     try {
-      console.log(data); // Replace with API call
-      setIsSubmitted(true);
+      const response = await fetch('/api/waitlist', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(submissionData),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || 'Failed to submit');
+      }
+
+      setSubmitStatus('success');
+      reset(); // Clear form on success
+      setCustomFeatures([]); // Clear custom features
     } catch (error) {
-      console.error('Submission failed:', error);
+      setSubmitStatus('error');
+      setErrorMessage(error instanceof Error ? error.message : 'Something went wrong');
     } finally {
-      setIsLoading(false);
+      setIsSubmitting(false);
     }
   };
 
-  const handleCustomFeatureAdd = () => {
-    const trimmedFeature = customFeature.trim();
-    if (trimmedFeature && !customFeatures.includes(trimmedFeature)) {
-      setCustomFeatures([...customFeatures, trimmedFeature]);
-      setCustomFeature('');
-      // Add to both selected features and form values
-      setSelectedFeatures(new Set([...selectedFeatures, trimmedFeature]));
-      const currentFeatures = getValues('interestedFeatures') || [];
-      setValue('interestedFeatures', [...currentFeatures, trimmedFeature]);
+  const handleAddCustomFeature = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (newFeature.trim() && !customFeatures.includes(newFeature.trim())) {
+      setCustomFeatures([...customFeatures, newFeature.trim()]);
+      setNewFeature('');
     }
   };
 
-  const handleCustomFeatureDelete = (feature: string) => {
-    setCustomFeatures(customFeatures.filter((f) => f !== feature));
-    // Remove from both selected features and form values
-    const newSelected = new Set(selectedFeatures);
-    newSelected.delete(feature);
-    setSelectedFeatures(newSelected);
-    setValue('interestedFeatures', getValues('interestedFeatures').filter((f) => f !== feature));
+  const handleRemoveCustomFeature = (feature: string) => {
+    setCustomFeatures(customFeatures.filter(f => f !== feature));
   };
 
   return (
-    <div className="py-24">
+    <div className="py-16 sm:py-24 bg-slate-50 dark:bg-slate-900/50">
       <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
-        <div className="mx-auto max-w-2xl lg:text-center">
-          <h2 className="text-base font-semibold leading-7 text-indigo-600 dark:text-indigo-400">
-            Early Access
-          </h2>
-          <p className="mt-2 text-4xl font-bold tracking-tight text-gray-900 dark:text-white sm:text-5xl">
-            Join Our Waitlist
-          </p>
-          <p className="mt-4 text-lg leading-8 text-gray-600 dark:text-gray-300">
-            Be among the first to experience our astrological insights platform
-          </p>
-        </div>
-
-        <div className="mx-auto mt-16 max-w-xl sm:mt-20">
-          {isSubmitted ? (
-            <div className="rounded-xl p-8 text-center shadow-lg">
-              <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-green-100 dark:bg-green-800">
-                <svg className="h-6 w-6 text-green-600 dark:text-green-400" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5" />
-                </svg>
-              </div>
-              <p className="mt-4 text-lg font-medium text-green-800 dark:text-green-200">
-                Thanks for joining our waitlist!
-              </p>
-              <p className="mt-2 text-sm text-green-700 dark:text-green-300">
-                We&apos;ll notify you when we launch.
+        {submitStatus === 'success' ? (
+          <div className="mx-auto max-w-xl text-center">
+            <h2 className="text-3xl font-bold tracking-tight text-slate-900 dark:text-white sm:text-4xl">
+              Thank You for Joining!
+            </h2>
+            <p className="mt-4 text-lg text-slate-600 dark:text-slate-300">
+              We&apos;ll keep you updated on our progress and let you know when we launch.
+            </p>
+          </div>
+        ) : (
+          <>
+            <div className="mx-auto max-w-xl text-center">
+              <h2 className="text-3xl font-bold tracking-tight text-slate-900 dark:text-white sm:text-4xl">
+                Join the Waitlist
+              </h2>
+              <p className="mt-4 text-lg text-slate-600 dark:text-slate-300">
+                Be among the first to experience our astrological platform
               </p>
             </div>
-          ) : (
-            <form onSubmit={handleSubmit(onSubmit)} className="space-y-8">
-              <div className="space-y-6 rounded-2xl">
-                <InputField label="Name" error={errors.name?.message}>
+
+            <form onSubmit={handleSubmit(onSubmit)} className="mx-auto mt-12 max-w-xl">
+              <div className="grid grid-cols-1 gap-y-6 sm:grid-cols-2 sm:gap-x-8">
+                {/* Name Field */}
+                <div className="sm:col-span-2">
+                  <label htmlFor="name" className="block text-sm font-medium text-slate-700 dark:text-slate-300">
+                    Name
+                  </label>
                   <input
+                    type="text"
                     {...register('name', { required: 'Name is required' })}
-                    className="block w-full rounded-lg border-0 px-4 py-3 bg-transparent text-gray-900 dark:text-gray-100 shadow-sm ring-1 ring-gray-300 dark:ring-gray-600 placeholder:text-gray-400 focus:ring-2 focus:ring-indigo-600 dark:focus:ring-indigo-500 sm:text-sm"
+                    className="mt-1 block w-full rounded-md border border-slate-300 dark:border-slate-600 px-3 py-2 text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500 dark:bg-slate-800"
                   />
-                </InputField>
+                  {errors.name && (
+                    <p className="mt-1 text-sm text-red-600 dark:text-red-400">{errors.name.message}</p>
+                  )}
+                </div>
 
-                <InputField label="Phone Number" error={errors.phone?.message}>
-                  <PhoneInput
-                    international
-                    defaultCountry="IN"
-                    value={getValues('phone')}
-                    onChange={(value) => setValue('phone', value || '')}
-                    className="[&_.PhoneInputInput]:bg-transparent [&_.PhoneInputInput]:w-full [&_.PhoneInputInput]:rounded-lg [&_.PhoneInputInput]:border-0 [&_.PhoneInputInput]:px-4 [&_.PhoneInputInput]:py-3 [&_.PhoneInputInput]:text-gray-900 dark:[&_.PhoneInputInput]:text-gray-100 [&_.PhoneInputInput]:shadow-sm [&_.PhoneInputInput]:ring-1 [&_.PhoneInputInput]:ring-gray-300 dark:[&_.PhoneInputInput]:ring-gray-600 [&_.PhoneInputInput]:focus:ring-2 [&_.PhoneInputInput]:focus:ring-indigo-600 dark:[&_.PhoneInputInput]:focus:ring-indigo-500"
+                {/* Email Field */}
+                <div className="sm:col-span-2">
+                  <label htmlFor="email" className="block text-sm font-medium text-slate-700 dark:text-slate-300">
+                    Email
+                  </label>
+                  <input
+                    type="email"
+                    {...register('email', {
+                      required: 'Email is required',
+                      pattern: {
+                        value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+                        message: 'Invalid email address',
+                      },
+                    })}
+                    className="mt-1 block w-full rounded-md border border-slate-300 dark:border-slate-600 px-3 py-2 text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500 dark:bg-slate-800"
                   />
-                </InputField>
+                  {errors.email && (
+                    <p className="mt-1 text-sm text-red-600 dark:text-red-400">{errors.email.message}</p>
+                  )}
+                </div>
 
-                <InputField label="Interested Features">
-                  <div className="mt-3 grid grid-cols-1 gap-4 sm:grid-cols-2">
-                    {FEATURE_OPTIONS.map((feature) => (
-                      <div key={feature} className="relative flex items-start">
-                        <div className="flex h-6 items-center">
-                          <input
-                            type="checkbox"
-                            {...register('interestedFeatures')}
-                            value={feature}
-                            className="h-5 w-5 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600"
-                          />
-                        </div>
-                        <div className="ml-3 text-sm leading-6">
-                          <label className="font-medium text-gray-900 dark:text-gray-200">{feature}</label>
-                        </div>
+                {/* Phone Field */}
+                <div className="sm:col-span-2">
+                  <label htmlFor="phone" className="block text-sm font-medium text-slate-700 dark:text-slate-300">
+                    Phone (optional)
+                  </label>
+                  <input
+                    type="tel"
+                    {...register('phone')}
+                    className="mt-1 block w-full rounded-md border border-slate-300 dark:border-slate-600 px-3 py-2 text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500 dark:bg-slate-800"
+                  />
+                </div>
+
+                {/* Interested Features */}
+                <div className="sm:col-span-2">
+                  <label className="block text-sm font-medium text-slate-700 dark:text-slate-300">
+                    Interested Features
+                  </label>
+                  <div className="mt-2 space-y-2">
+                    {featureOptions.map((feature) => (
+                      <div key={feature} className="flex items-center">
+                        <input
+                          type="checkbox"
+                          {...register('interestedFeatures')}
+                          value={feature}
+                          className="h-4 w-4 text-indigo-600 dark:text-indigo-400 border-slate-300 dark:border-slate-600"
+                        />
+                        <label className="ml-2 text-sm text-slate-600 dark:text-slate-400">{feature}</label>
                       </div>
                     ))}
-                    {customFeatures.map((feature) => (
-                    <div key={feature} className="flex items-center">
-                      <input
-                        type="checkbox"
-                        checked={true}
-                        disabled
-                        className="h-4 w-4 rounded border-gray-300 text-gray-400 bg-gray-200 dark:bg-gray-700"
-                      />
-                      <label className="ml-3 text-sm text-gray-900 dark:text-gray-100 select-none flex items-center">
-                        {feature}
-                        <button
-                          type="button"
-                          onClick={() => handleCustomFeatureDelete(feature)}
-                          className="ml-2 p-1 text-gray-400 hover:text-red-600 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 transition-all"
-                          aria-label="Remove feature"
-                        >
-                          <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
-                            <path fillRule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clipRule="evenodd" />
-                          </svg>
-                        </button>
-                      </label>
-                    </div>
-                  ))}
                   </div>
-                </InputField>
+                </div>
 
-                <InputField label="Suggest New Features">
-                  <div className="flex space-x-2">
+                {/* Custom Features */}
+                <div className="sm:col-span-2">
+                  <label className="block text-sm font-medium text-slate-700 dark:text-slate-300">
+                    Custom Features
+                  </label>
+                  
+                  {/* Add new feature form */}
+                  <div className="flex gap-2 mt-1">
                     <input
-                      value={customFeature}
-                      onChange={(e) => setCustomFeature(e.target.value)}
-                      className="block w-full rounded-lg border-0 px-4 py-3 bg-transparent text-gray-900 dark:text-gray-100 shadow-sm ring-1 ring-gray-300 dark:ring-gray-600 placeholder:text-gray-400 focus:ring-2 focus:ring-indigo-600 dark:focus:ring-indigo-500"
+                      type="text"
+                      value={newFeature}
+                      onChange={(e) => setNewFeature(e.target.value)}
+                      className="block flex-1 rounded-md border border-slate-300 dark:border-slate-600 px-3 py-2 text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500 dark:bg-slate-800"
+                      placeholder="Suggest a feature"
                     />
                     <button
+                      onClick={handleAddCustomFeature}
                       type="button"
-                      onClick={handleCustomFeatureAdd}
-                      className="rounded-lg bg-indigo-600 px-4 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                      className="px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-500"
                     >
                       Add
                     </button>
                   </div>
-                </InputField>
 
-                <InputField label="Message (Optional)">
+                  {/* Custom features list */}
+                  <div className="mt-2 space-y-2">
+                    {customFeatures.map((feature) => (
+                      <div key={feature} className="flex items-center justify-between p-2 rounded-md bg-slate-50 dark:bg-slate-800/50">
+                        <span className="text-sm text-slate-600 dark:text-slate-400">{feature}</span>
+                        <button
+                          type="button"
+                          onClick={() => handleRemoveCustomFeature(feature)}
+                          className="text-red-600 hover:text-red-700 text-sm"
+                        >
+                          Remove
+                        </button>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Message */}
+                <div className="sm:col-span-2">
+                  <label htmlFor="message" className="block text-sm font-medium text-slate-700 dark:text-slate-300">
+                    Additional Comments
+                  </label>
                   <textarea
                     {...register('message')}
                     rows={4}
-                    className="block w-full rounded-lg border-0 px-4 py-3 bg-transparent text-gray-900 dark:text-gray-100 shadow-sm ring-1 ring-gray-300 dark:ring-gray-600 placeholder:text-gray-400 focus:ring-2 focus:ring-indigo-600 dark:focus:ring-indigo-500"
+                    className="mt-1 block w-full rounded-md border border-slate-300 dark:border-slate-600 px-3 py-2 text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500 dark:bg-slate-800"
                   />
-                </InputField>
+                </div>
               </div>
 
-              <button
-                type="submit"
-                disabled={isLoading}
-                className="w-full rounded-lg bg-indigo-600 px-8 py-4 text-base font-semibold text-white shadow-lg hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200"
-              >
-                {isLoading ? (
-                  <span className="flex items-center justify-center gap-2">
-                    <svg className="animate-spin h-5 w-5" viewBox="0 0 24 24">
-                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none" />
-                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
-                    </svg>
-                    Submitting...
-                  </span>
-                ) : (
-                  'Join Waitlist'
-                )}
-              </button>
+              {/* Update the error message display */}
+              {submitStatus === 'error' && (
+                <div className="mt-6 p-4 rounded-md bg-red-50 dark:bg-red-900/20 text-red-700 dark:text-red-300">
+                  {errorMessage}
+                </div>
+              )}
+
+              {/* Submit Button */}
+              <div className="mt-6 sm:col-span-2">
+                <button
+                  type="submit"
+                  disabled={isSubmitting}
+                  className="w-full rounded-md bg-indigo-600 px-6 py-3 text-base font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200"
+                >
+                  {isSubmitting ? 'Submitting...' : 'Join Waitlist'}
+                </button>
+              </div>
             </form>
-          )}
-        </div>
+          </>
+        )}
       </div>
     </div>
   );
