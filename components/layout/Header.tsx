@@ -47,8 +47,8 @@ export default function Header() {
                   href={item.href}
                   className={`px-4 py-2.5 rounded-xl text-sm font-medium transition-all duration-200 flex items-center gap-2 hover:scale-105 ${
                     pathname === item.href
-                      ? 'text-indigo-600 dark:text-indigo-400 bg-indigo-50 dark:bg-indigo-900/20'
-                      : 'text-gray-600 dark:text-gray-300 hover:bg-[#bbbaab] dark:hover:bg-gray-800/50'
+                      ? 'text-indigo-600 dark:text-indigo-400 bg-[#d2d2d0] dark:bg-indigo-900/20'
+                      : 'text-gray-600 dark:text-gray-300 hover:bg-[#dbdad0] dark:hover:bg-gray-800/50'
                   }`}
                 >
                   <item.icon className="h-4 w-4" /> 

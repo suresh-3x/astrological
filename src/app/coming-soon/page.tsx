@@ -1,97 +1,11 @@
 'use client';
 
-import { useEffect, useRef } from 'react';
 import Link from 'next/link';
 
 const ComingSoon = () => {
-  const canvasRef = useRef<HTMLCanvasElement>(null);
-
-  useEffect(() => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-
-    const ctx = canvas.getContext('2d');
-    if (!ctx) return;
-
-    // Set canvas size
-    const setCanvasSize = () => {
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
-    };
-    setCanvasSize();
-    window.addEventListener('resize', setCanvasSize);
-
-    // Star properties
-    const stars: Array<{
-      x: number;
-      y: number;
-      radius: number;
-      vx: number;
-      vy: number;
-      alpha: number;
-    }> = [];
-
-    // Initialize stars
-    const initStars = () => {
-      for (let i = 0; i < 200; i++) {
-        stars.push({
-          x: Math.random() * canvas.width,
-          y: Math.random() * canvas.height,
-          radius: Math.random() * 1.5,
-          vx: (Math.random() - 0.5) * 0.5,
-          vy: (Math.random() - 0.5) * 0.5,
-          alpha: Math.random(),
-        });
-      }
-    };
-
-    initStars();
-
-    // Animation
-    const animate = () => {
-      ctx.fillStyle = 'rgba(15, 23, 42, 0.1)'; // Dark blue background with trail effect
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-      stars.forEach((star) => {
-        // Update position
-        star.x += star.vx;
-        star.y += star.vy;
-        star.alpha += (Math.random() - 0.5) * 0.05;
-
-        // Keep alpha in bounds
-        if (star.alpha <= 0) star.alpha = 0;
-        if (star.alpha >= 1) star.alpha = 1;
-
-        // Wrap around screen
-        if (star.x < 0) star.x = canvas.width;
-        if (star.x > canvas.width) star.x = 0;
-        if (star.y < 0) star.y = canvas.height;
-        if (star.y > canvas.height) star.y = 0;
-
-        // Draw star
-        ctx.beginPath();
-        ctx.arc(star.x, star.y, star.radius, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(167, 139, 250, ${star.alpha})`; // Indigo color
-        ctx.fill();
-      });
-
-      requestAnimationFrame(animate);
-    };
-
-    animate();
-
-    return () => {
-      window.removeEventListener('resize', setCanvasSize);
-    };
-  }, []);
-
   return (
-    <div className="relative overflow-hidden">
-      <canvas
-        ref={canvasRef}
-        className="absolute inset-0 -z-10 pointer-events-none"
-      />
-      <div className="relative z-10 flex min-h-[calc(100vh-4rem)] flex-col items-center justify-center px-4 text-center">
+    <div className="relative">
+      <div className="flex min-h-[calc(100vh-4rem)] flex-col items-center justify-center px-4 text-center">
         <h1 className="mb-6 text-4xl font-bold tracking-tight text-slate-900 dark:text-white sm:text-6xl">
           Coming
           <span className="bg-gradient-to-r from-violet-600 to-indigo-600 bg-clip-text text-transparent">
