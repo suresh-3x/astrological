@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import MainLayout from "../../components/layout/MainLayout";
 import "./globals.css";
+import { Analytics } from "@vercel/analytics/react"
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -28,9 +29,10 @@ export default function RootLayout({
             `,
           }}
         />
+      <Analytics/>
       </head>
       <body suppressHydrationWarning className={`h-full ${inter.className}`}>
-        <MainLayout>{children}</MainLayout>
+      	<MainLayout>{children}</MainLayout>
       </body>
     </html>
   );
