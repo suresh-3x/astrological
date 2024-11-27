@@ -173,8 +173,23 @@ export default function Hero() {
               
               <div className="mt-10 flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
                 <Link
-                  href="/signup"
+                  href="#waitlist"
                   className="rounded-md bg-indigo-600 dark:bg-indigo-500 px-6 py-3 text-base font-semibold text-white shadow-sm hover:bg-indigo-500 dark:hover:bg-indigo-400 transition-all duration-200 hover:scale-105"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    const element = document.getElementById('waitlist');
+                    const header = document.querySelector('header');
+                    const headerOffset = header?.offsetHeight || 0;
+                    
+                    if (element) {
+                      const elementPosition = element.getBoundingClientRect().top;
+                      const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+                      window.scrollTo({
+                        top: offsetPosition,
+                        behavior: 'smooth'
+                      });
+                    }
+                  }}
                 >
                   Begin Your Journey
                 </Link>

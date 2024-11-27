@@ -91,7 +91,7 @@ export default function WaitlistForm() {
   };
 
   return (
-    <div className="py-16 sm:py-24  dark:bg-slate-900/50">
+    <div id="waitlist" className="py-16 sm:py-24 dark:bg-slate-900/50">
       <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
         {submitStatus === 'success' ? (
           <div className="mx-auto max-w-xl text-center">
